@@ -1,92 +1,58 @@
-// Shopping Cart Simulation
+// Initial Arrays
+let fruits = ['apple', 'banana', 'orange'];
+let numbers = [3, 1, 5, 2, 4];
 
-// Simulating a user login status
-let isLoggedIn = true; // Change to false to test the logged-out state
-
-// List of available products
-const products = [
-    { id: 1, name: "Laptop", price: 1000 },
-    { id: 2, name: "Smartphone", price: 500 },
-    { id: 3, name: "Headphones", price: 100 }
-];
-
-// Cart to store added products
-let cart = [];
-
-// Function to display available products
-function displayProducts() {
-    const productsList = document.getElementById('products-list');
-    productsList.innerHTML += '<ul id="products"></ul>';
-    const productsUl = document.getElementById('products');
-    products.forEach(product => {
-        const productLi = document.createElement('li');
-        productLi.className = 'product';
-        productLi.innerHTML = `${product.name} - $${product.price} <button onclick="addToCart(${product.id})">Add to Cart</button>`;
-        productsUl.appendChild(productLi);
-    });
+// Task 1: Adding and Removing Elements
+function updateFruitsDisplay() {
+    document.getElementById('fruits-output').textContent = `Current Fruits: ${fruits.join(', ')}`;
 }
 
-// Function to display cart items
-function displayCart() {
-    const cartDiv = document.getElementById('cart');
-    cartDiv.innerHTML += '<ul id="cart-items"></ul>';
-    const cartUl = document.getElementById('cart-items');
-    cart.forEach(item => {
-        const cartItemLi = document.createElement('li');
-        cartItemLi.className = 'cart-item';
-        cartItemLi.textContent = `${item.name} - $${item.price}`;
-        cartUl.appendChild(cartItemLi);
-    });
-}
-
-// Function to display total cost
-function displayTotalCost() {
-    const totalCostDiv = document.getElementById('total-cost');
-    totalCostDiv.innerHTML += `<p>Total Cost: $${calculateTotalCost()}</p>`;
-}
-
-// Task 1: Check if the user is logged in
-function addToCart(productId) {
-    if (isLoggedIn) {
-        const product = products.find(p => p.id === productId);
-        if (product) {
-            cart.push(product);
-            updateCart();
-            console.log(`${product.name} added to cart.`);
-        } else {
-            console.log("Product not found.");
-        }
-    } else {
-        console.log("User is not logged in. Please log in to add items to the cart.");
+document.getElementById('add-fruit').addEventListener('click', () => {
+    const newFruit = prompt('Enter the name of the fruit to add:');
+    if (newFruit) {
+        fruits.push(newFruit);
+        updateFruitsDisplay();
     }
-}
+});
 
-// Function to update cart display
-function updateCart() {
-    const cartUl = document.getElementById('cart-items');
-    cartUl.innerHTML = ''; // Clear existing cart items
-    displayCart(); // Redisplay cart items
-    displayTotalCost(); // Update total cost
-}
+document.getElementById('remove-fruit').addEventListener('click', () => {
+    fruits.pop();
+    updateFruitsDisplay();
+});
 
-// Function to calculate the total cost of items in the cart
-function calculateTotalCost() {
-    return cart.reduce((total, product) => total + product.price, 0);
-}
+updateFruitsDisplay();
 
-// Initialize the page by displaying products and setting up event listeners
-function initializePage() {
-    displayProducts();
-    document.getElementById('checkout-button').addEventListener('click', () => {
-        if (cart.length > 0) {
-            alert(`Thank you for your purchase! Your total is $${calculateTotalCost()}`);
-            cart = []; // Empty the cart
-            updateCart();
-        } else {
-            alert("Your cart is empty.");
-        }
-    });
-}
+// Task 2: Sorting Arrays
+document.getElementById('sort-numbers').addEventListener('click', () => {
+    numbers.sort((a, b) => a - b);
+    document.getElementById('numbers-output').textContent = `Sorted Numbers: ${numbers.join(', ')}`;
+});
 
-// Run the initialization function when the page loads
-initializePage();
+// Task 3: Applying Array Methods
+document.getElementById('apply-methods').addEventListener('click', () => {
+    // map method to double each number
+    const doubled = numbers.map(num => num * 2);
+    document.getElementById('map-output').textContent = `Doubled Numbers: ${doubled.join(', ')}`;
+
+    // filter method to get even numbers
+    const evens = numbers.filter(num => num % 2 === 0);
+    document.getElementById('filter-output').textContent = `Even Numbers: ${evens.join(', ')}`;
+
+    // reduce method to calculate the sum of all numbers
+    const sum = numbers.reduce((acc, num) => acc + num, 0);
+    document.getElementById('reduce-output').textContent = `Sum of Numbers: ${sum}`;
+});
+
+// Task 4: Spread and Rest Operators
+document.getElementById('spread-rest').addEventListener('click', () => {
+    // Spread operator example
+    const moreNumbers = [...numbers, 6, 7, 8];
+    document.getElementById('spread-output').textContent = `Numbers with Spread Operator: ${moreNumbers.join(', ')}`;
+
+    // Rest operator example in function
+    function sumAll(...args) {
+        return args.reduce((acc, num) => acc + num, 0);
+    }
+    const totalSum = sumAll(...moreNumbers);
+    document.getElementById('rest-output').textContent = `Sum of Spread Numbers: ${totalSum}`;
+});
